@@ -1,0 +1,125 @@
+n queen
+
+
+
+
+
+#include <stdio.h>
+#include <string.h>
+
+#define N 8
+
+int isSafe(char mat[][N], int r, int c) {
+    for (int i = 0; i < r; i++) {
+        if (mat[i][c] == 'Q') {
+            return 0;
+        }
+    }
+    
+    for (int i = r, j = c; i >= 0 && j >= 0; i--, j--) {
+        if (mat[i][j] == 'Q') {
+            return 0;
+        }
+    }
+
+    for (int i = r, j = c; i >= 0 && j < N; i--, j++) {
+        if (mat[i][j] == 'Q') {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+void printSolution(char mat[][N]) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            printf("%c ", mat[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+int nQueen(char mat[][N], int r) {
+    if (r == N) {
+        printSolution(mat);
+        return 1; // Return 1 to indicate a solution was found
+    }
+
+    for (int i = 0; i < N; i++) {
+        if (isSafe(mat, r, i)) {
+            mat[r][i] = 'Q';
+            if (nQueen(mat, r + 1)) // If a solution is found, stop further calls
+                return 1;
+            mat[r][i] = '-';
+        }
+    }
+
+    return 0; // Return 0 if no solution found at this level
+}
+
+int main() {
+    char mat[N][N];
+    memset(mat, '-', sizeof mat);
+    nQueen(mat, 0);
+    return 0;
+}
+
+
+
+
+
+
+N = 8
+
+def isSafe(mat, r, c):
+    # Check column
+    for i in range(r):
+        if mat[i][c] == 'Q':
+            return False
+    
+    # Check upper-left diagonal
+    i, j = r, c
+    while i >= 0 and j >= 0:
+        if mat[i][j] == 'Q':
+            return False
+        i -= 1
+        j -= 1
+
+    # Check upper-right diagonal
+    i, j = r, c
+    while i >= 0 and j < N:
+        if mat[i][j] == 'Q':
+            return False
+        i -= 1
+        j += 1
+
+    return True
+
+def printSolution(mat):
+    for row in mat:
+        print(" ".join(row))
+    print("\n")
+
+def nQueen(mat, r):
+    if r == N:
+        printSolution(mat)
+        return True  # Return True to indicate a solution was found
+
+    for i in range(N):
+        if isSafe(mat, r, i):
+            mat[r][i] = 'Q'
+            if nQueen(mat, r + 1):  # If a solution is found, stop further calls
+                return True
+            mat[r][i] = '-'
+
+    return False  # Return False if no solution found at this level
+
+def main():
+    mat = [['-' for _ in range(N)] for _ in range(N)]
+    nQueen(mat, 0)
+
+if __name__ == "__main__":
+    main()
+
