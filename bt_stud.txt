@@ -1,0 +1,38 @@
+bt stud
+
+
+
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.0;
+
+contract StudentData {
+    struct Student {
+        uint id;
+        string name;
+        uint age;
+    }
+
+    Student[] public students;
+    uint public studentCount = 0;
+
+    function addStudent(string memory _name, uint _age) public {
+        studentCount += 1;
+        students.push(Student(studentCount, _name, _age));
+    }
+
+    function getStudent(uint _index) public view returns (uint, string memory, uint) {
+        require(_index < studentCount, "Student does not exist.");
+        Student memory s = students[_index];
+        return (s.id, s.name, s.age);
+    }
+
+    // Receive function to handle plain Ether transfers
+    receive() external payable {}
+
+    // Fallback function for non-existent function calls or data with transactions
+    fallback() external payable {}
+
+    function getContractBalance() public view returns (uint) {
+        return address(this).balance;
+    }
+}
